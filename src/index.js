@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import SeasonDisplay from "./SeasonDisplay";
+import Spinner from "./Spinner";
 
 // determines location + month
 class App extends React.Component {
-  state = { lat: null, long: null, errorMessage: "" };
+  state = { lat: null, errorMessage: "" };
 
   componentDidMount() {
     console.log("My component was rendered");
@@ -12,9 +13,7 @@ class App extends React.Component {
       position => {
         console.log(position);
         this.setState({
-          lat: position.coords.latitude,
-          long: position.coords.longitude,
-          errorMessage: ""
+          lat: position.coords.latitude
         });
       },
       err => {
@@ -23,24 +22,20 @@ class App extends React.Component {
     );
   }
 
-  componentDidUpdate() {
-    console.log("My component was updated!");
-  }
-
-  render() {
+  renderContent() {
     if (this.state.errorMessage && !this.state.lat) {
       return <div>Error: {this.state.errorMessage} </div>;
     }
 
-    if (!this.state.errorMessage && this.state.long) {
-      return <div>Longitude: {this.state.long}</div>;
-    }
-
     if (!this.state.errorMessage && this.state.lat) {
-      return <div>Latitude: {this.state.lat}</div>;
+      return <SeasonDisplay lat={this.state.lat} />;
     }
 
-    return <div>Loading!</div>;
+    return <Spinner message="Please accept location request" />;
+  }
+
+  render() {
+    return <div className="border red">{this.renderContent()}</div>;
   }
 }
 
