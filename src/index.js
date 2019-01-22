@@ -9,6 +9,7 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log("My component was rendered");
+
     window.navigator.geolocation.getCurrentPosition(
       position => {
         console.log(position);
@@ -26,7 +27,6 @@ class App extends React.Component {
     if (this.state.errorMessage && !this.state.lat) {
       return <div>Error: {this.state.errorMessage} </div>;
     }
-
     if (!this.state.errorMessage && this.state.lat) {
       return <SeasonDisplay lat={this.state.lat} />;
     }
